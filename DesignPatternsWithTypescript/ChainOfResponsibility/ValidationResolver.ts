@@ -13,6 +13,7 @@
                     return false;
                 }
             }
+            return true;
         }
     }
 }
