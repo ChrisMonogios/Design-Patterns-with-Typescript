@@ -1,6 +1,8 @@
 ﻿/// <element path="ValidationResolver.ts">
 /// <element path="Customer.ts">
 /// <element path="Stock.ts">
+/// <elemnt path="LogFactory">
+/// <element path="LogEnum">
 
 window.onload = () => {
 
@@ -25,4 +27,8 @@ window.onload = () => {
 
     stock1.setPrice(19);
     stock1.setPrice(200);
+
+    // Factory:
+    var log = new factory.LogFactory().build(factory.LogEnum.console);
+    log.error("an error just happened!");
 };

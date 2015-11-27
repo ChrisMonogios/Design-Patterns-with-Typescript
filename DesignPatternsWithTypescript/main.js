@@ -1,6 +1,8 @@
 /// <element path="ValidationResolver.ts">
 /// <element path="Customer.ts">
 /// <element path="Stock.ts">
+/// <elemnt path="LogFactory">
+/// <element path="LogEnum">
 window.onload = function () {
     // Chain of responsibility:
     var resolver = new validators.ValidationResolver();
@@ -18,6 +20,9 @@ window.onload = function () {
     stock1.subscribe(customer2);
     stock1.setPrice(19);
     stock1.setPrice(200);
+    // Factory:
+    var log = new factory.LogFactory().build(factory.LogEnum.console);
+    log.error("an error just happened!");
 };
 var validators;
 (function (validators) {
@@ -70,6 +75,67 @@ var validators;
     })();
     validators.ValidationResolver = ValidationResolver;
 })(validators || (validators = {}));
+var factory;
+(function (factory) {
+    var AlertLog = (function () {
+        function AlertLog() {
+            this.error = function (name) {
+                alert(name);
+            };
+            this.warning = function (name) {
+                alert(name);
+            };
+            this.information = function (name) {
+                alert(name);
+            };
+        }
+        return AlertLog;
+    })();
+    factory.AlertLog = AlertLog;
+})(factory || (factory = {}));
+var factory;
+(function (factory) {
+    var ConsoleLog = (function () {
+        function ConsoleLog() {
+            this.error = function (name) {
+                console.error(name);
+            };
+            this.warning = function (name) {
+                console.warn(name);
+            };
+            this.information = function (name) {
+                console.info(name);
+            };
+        }
+        return ConsoleLog;
+    })();
+    factory.ConsoleLog = ConsoleLog;
+})(factory || (factory = {}));
+var factory;
+(function (factory) {
+    (function (LogEnum) {
+        LogEnum[LogEnum["alert"] = 0] = "alert";
+        LogEnum[LogEnum["console"] = 1] = "console";
+    })(factory.LogEnum || (factory.LogEnum = {}));
+    var LogEnum = factory.LogEnum;
+})(factory || (factory = {}));
+var factory;
+(function (factory) {
+    var LogFactory = (function () {
+        function LogFactory() {
+            this.build = function (type) {
+                if (type === factory.LogEnum.alert) {
+                    return new factory.AlertLog();
+                }
+                else if (type === factory.LogEnum.console) {
+                    return new factory.ConsoleLog();
+                }
+            };
+        }
+        return LogFactory;
+    })();
+    factory.LogFactory = LogFactory;
+})(factory || (factory = {}));
 var observer;
 (function (observer) {
     var Customer = (function () {
