@@ -11,12 +11,13 @@ window.onload = function () {
     // Observer
     var customer1 = new observer.Customer("Christos Monogios");
     var customer2 = new observer.Customer("John Doe");
-    customer1.onPriceChange = function () { console.log("do not sell!"); };
-    customer2.onPriceChange = function () { console.log("sell now!"); };
     var stock1 = new observer.Stock("oil company");
-    stock1.subscribe(customer1.onPriceChange);
-    stock1.subscribe(customer2.onPriceChange);
+    customer1.buyStock(stock1, 150);
+    customer2.buyStock(stock1, 10);
+    stock1.subscribe(customer1);
+    stock1.subscribe(customer2);
     stock1.setPrice(19);
+    stock1.setPrice(200);
 };
 var validators;
 (function (validators) {
@@ -74,11 +75,20 @@ var observer;
     var Customer = (function () {
         function Customer(name) {
             var _this = this;
-            this.onPriceChange = function (callback, sell) {
-                callback(sell);
+            this.onPriceChange = function (price) {
+                for (var i = 0; i < _this.ownedStocks.length; i++) {
+                    if (price > _this.ownedStocks[i][1]) {
+                        console.log(_this.name + " sold his " + _this.ownedStocks[i][0].Name + " stocks!");
+                    }
+                }
             };
-            this.buyStock = function (stock) {
-                _this.ownedStocks.push(stock);
+            this.buyStock = function (stock, whenToSell) {
+                if (typeof _this.ownedStocks === "undefined") {
+                    _this.ownedStocks = [[stock, whenToSell]];
+                }
+                else {
+                    _this.ownedStocks.push([stock, whenToSell]);
+                }
             };
             this.name = name;
         }
@@ -101,7 +111,7 @@ var observer;
             this.setPrice = function (price) {
                 _this.price = price;
                 for (var i = 0; i < _this.peopleWhoOwnThisStock.length; i++) {
-                    _this.peopleWhoOwnThisStock[i]();
+                    _this.peopleWhoOwnThisStock[i].onPriceChange(price);
                 }
             };
             this.getPrice = function () {
@@ -110,6 +120,16 @@ var observer;
             this.name = name;
             this.peopleWhoOwnThisStock = [];
         }
+        Object.defineProperty(Stock.prototype, "Name", {
+            get: function () {
+                return this.name;
+            },
+            set: function (value) {
+                this.name = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
         return Stock;
     })();
     observer.Stock = Stock;

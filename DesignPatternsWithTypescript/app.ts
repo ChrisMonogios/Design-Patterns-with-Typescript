@@ -15,13 +15,14 @@ window.onload = () => {
     // Observer
     var customer1 = new observer.Customer("Christos Monogios");
     var customer2 = new observer.Customer("John Doe");
-
-    customer1.onPriceChange = function () { console.log("do not sell!") };
-    customer2.onPriceChange = function () { console.log("sell now!") };
-
     var stock1 = new observer.Stock("oil company");
-    stock1.subscribe(customer1.onPriceChange);
-    stock1.subscribe(customer2.onPriceChange);
+
+    customer1.buyStock(stock1, 150);
+    customer2.buyStock(stock1, 10);
+    
+    stock1.subscribe(customer1);
+    stock1.subscribe(customer2);
 
     stock1.setPrice(19);
+    stock1.setPrice(200);
 };

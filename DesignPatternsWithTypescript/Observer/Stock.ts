@@ -21,12 +21,20 @@
         setPrice = (price: number): void => {
             this.price = price;
             for (var i = 0; i < this.peopleWhoOwnThisStock.length; i++) {
-                this.peopleWhoOwnThisStock[i]();
+                this.peopleWhoOwnThisStock[i].onPriceChange(price);
             }
         }
 
         getPrice = (): number => {
             return this.price;
+        }
+
+        get Name(): string {
+            return this.name;
+        }
+
+        set Name(value: string) {
+            this.name = value;
         }
 
     }
