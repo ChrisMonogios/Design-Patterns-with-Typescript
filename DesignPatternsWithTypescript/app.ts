@@ -1,8 +1,9 @@
-﻿/// <element path="ValidationResolver.ts">
-/// <element path="Customer.ts">
-/// <element path="Stock.ts">
-/// <elemnt path="LogFactory">
-/// <element path="LogEnum">
+﻿/// <element path="ValidationResolver.ts" />
+/// <element path="Customer.ts" />
+/// <element path="Stock.ts" />
+/// <elemnt path="LogFactory" />
+/// <element path="LogEnum" />
+/// <element path="SingletonFactory" />
 
 window.onload = () => {
 
@@ -31,4 +32,8 @@ window.onload = () => {
     // Factory:
     var log = new factory.LogFactory().build(factory.LogEnum.console);
     log.error("an error just happened!");
+
+    // Singleton:
+    var singleton = new singleton.SingletonFactory();
+    var secVariable = singleton.getInstance();
 };
