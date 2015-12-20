@@ -1,9 +1,10 @@
-﻿/// <element path="ValidationResolver.ts" />
-/// <element path="Customer.ts" />
-/// <element path="Stock.ts" />
-/// <elemnt path="LogFactory" />
-/// <element path="LogEnum" />
-/// <element path="SingletonFactory" />
+﻿/// <reference path="ChainOfResponsibility/ValidationResolver.ts" />
+/// <reference path="Observer/Customer.ts" />
+/// <reference path="Observer/Stock.ts" />
+/// <reference path="Factory/LogFactory" />
+/// <reference path="Factory/LogEnum" />
+/// <reference path="Singleton/SingletonFactory" />
+/// <reference path="Adapter/ExternalSoftwareAdapter.ts" />
 
 window.onload = () => {
 
@@ -34,6 +35,11 @@ window.onload = () => {
     log.error("an error just happened!");
 
     // Singleton:
-    var singleton = new singleton.SingletonFactory();
-    var secVariable = singleton.getInstance();
+    var sing = new singleton.SingletonFactory();
+    var secVariable = sing.getInstance();
+
+    //Adapter
+    var adapt = new adapter.ExternalSoftwareAdapter();
+    adapt.simpleMethod1();
+    adapt.simpleMethod2("", 1);
 };
